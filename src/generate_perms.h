@@ -1,0 +1,1 @@
+void generatePermutations(int cardNums[], int permutations[][4], int *nPermutations);

@@ -1,0 +1,1 @@
+void readInput(int cardNums[]);
