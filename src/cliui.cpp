@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <iostream>
+#include <limits>
 #include <string>
 
 using std::cin;
@@ -13,59 +14,50 @@ using std::string;
 void readInput(int cardNums[]) {
     int i = 0;
     int idx = 0;
+    bool spaceSeparated = true;
 
     string str;
     getline(cin >> std::ws, str);
 
     char c;
-    while (i < 4) {
+    while (idx < str.length()) {
         c = str[idx];
 
-        if (c > '1' && c <= '9') {
-            cardNums[i] = c - '0';
-        } else if (c == '1') {
-            cin >> c;
+        if (c > '1' && c <= '9' && spaceSeparated) {
+            cardNums[i % 4] = c - '0';
+            spaceSeparated = false;
+        } else if (c == '1' && spaceSeparated) {
+            idx++;
+            c = str[idx];
             if (c == '0') {
-                cardNums[i] = 10;
+                cardNums[i % 4] = 10;
+                spaceSeparated = false;
             } else {
                 cardNums[0] = cardNums[1] = cardNums[2] = cardNums[3] = -1;
                 return;
             }
         } else {
-            switch (c) {
-                case 'A':
-                case 'a':
-                    cardNums[i] = 1;
-                    break;
-                case 'J':
-                case 'j':
-                    cardNums[i] = 11;
-                    break;
-                case 'Q':
-                case 'q':
-                    cardNums[i] = 12;
-                    break;
-                case 'K':
-                case 'k':
-                    cardNums[i] = 13;
-                    break;
-                case ' ':
-                    i--;
-                    break;
-                default:
-                    cardNums[0] = cardNums[1] = cardNums[2] = cardNums[3] = -1;
-                    return;
+            if ((c == 'A' || c == 'a') && spaceSeparated) {
+                cardNums[i % 4] = 1;
+                spaceSeparated = false;
+            } else if ((c == 'J' || c == 'j') && spaceSeparated) {
+                cardNums[i % 4] = 11;
+                spaceSeparated = false;
+            } else if ((c == 'Q' || c == 'q') && spaceSeparated) {
+                cardNums[i % 4] = 12;
+                spaceSeparated = false;
+            } else if ((c == 'K' || c == 'k') && spaceSeparated) {
+                cardNums[i % 4] = 13;
+                spaceSeparated = false;
+            } else if (c == ' ') {
+                spaceSeparated = true;
+                i--;
+            } else {
+                cardNums[0] = cardNums[1] = cardNums[2] = cardNums[3] = -1;
             }
         }
-
         i++;
         idx++;
-    }
-
-    c = str[idx];
-    while (idx < str.length() || c == ' ') {
-        idx++;
-        c = str[idx];
     }
 
     if (i != 4 || idx < str.length()) {
@@ -132,6 +124,7 @@ int menuPrompt(string prompt, vector<string> choices) {
         if (choice < 1 || choice > choices.size()) {
             cout << endl << "Invalid input" << endl << endl;
         } else {
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             return choice;
         }
     }

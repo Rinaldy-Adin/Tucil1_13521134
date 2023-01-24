@@ -52,6 +52,7 @@ int main() {
                 for (int i = 0; i < 4; i++) {
                     cardNums[i] = rand() % 13 + 1;
                 }
+                cout << endl << endl;
             }
 
             if (cardNums[0] != -1) {
