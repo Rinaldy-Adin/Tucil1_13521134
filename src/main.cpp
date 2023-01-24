@@ -79,7 +79,7 @@ int main() {
 
                 cout << "\nSolution algorithm elapsed for " << std::fixed << std::setprecision(3)
                      << elapsed.count() * 1e-6 << " miliseconds\n";
-                waitForEnter();
+                askToSave(cardNums, expressions, elapsed.count());
             } else {
                 cout << "\nInput invalid\n";
                 waitForEnter();

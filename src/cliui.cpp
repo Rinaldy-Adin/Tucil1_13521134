@@ -1,6 +1,8 @@
 #include "cliui.h"
 
 #include <cstdio>
+#include <fstream>
+#include <iomanip>
 #include <iostream>
 #include <limits>
 #include <string>
@@ -9,6 +11,8 @@ using std::cin;
 using std::cout;
 using std::endl;
 using std::getline;
+using std::ifstream;
+using std::ofstream;
 using std::string;
 
 void readInput(int cardNums[]) {
@@ -160,4 +164,62 @@ void printCards(int cardNums[]) {
 void waitForEnter() {
     cout << "Continue? (press enter)";
     cin.ignore(INT_MAX, '\n');
+}
+
+void askToSave(int cardNums[], vector<string> solutions, int nanoseconds) {
+    string str;
+    do {
+        cout << "\nWould you like to save your results to a file?(y/n): ";
+        getline(cin >> std::ws, str);
+    } while (str[0] != 'y' && str[0] != 'Y' && str[0] != 'n' && str[0] != 'N');
+
+    if (str[0] == 'y' && str[0] != 'Y') {
+        do {
+            cout << "Enter the path to your file: ";
+            getline(cin >> std::ws, str);
+            ofstream outfile;
+
+            try {
+                outfile.open(str);
+                outfile << "Cards: ";
+
+                for (int i = 0; i < 4; i++) {
+                    switch (cardNums[i]) {
+                        case 1:
+                            outfile << "A ";
+                            break;
+                        case 11:
+                            outfile << "J ";
+                            break;
+                        case 12:
+                            outfile << "Q ";
+                            break;
+                        case 13:
+                            outfile << "K ";
+                            break;
+                        default:
+                            outfile << cardNums[i] << " ";
+                            break;
+                    }
+                }
+                outfile << endl << endl;
+
+                outfile << solutions.size() << " solutions found" << endl << endl;
+                for (string solution : solutions) {
+                    outfile << solution << endl;
+                }
+
+                outfile << "\nSolution algorithm elapsed for " << std::fixed << std::setprecision(3)
+                        << nanoseconds * 1e-6 << " miliseconds" << endl;
+
+                outfile.close();
+                break;
+            } catch (const ofstream::failure& e) {
+                outfile.close();
+                cout << "Filepath not valid" << endl;
+            }
+        } while (true);
+
+        cout << "\nFile successfully written!" << endl;
+    }
 }

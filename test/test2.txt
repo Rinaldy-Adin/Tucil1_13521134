@@ -1,0 +1,12 @@
+Cards: 3 8 4 7 
+
+6 solutions found
+
+8 + (4 * (7 - 3))
+(4 * (7 - 3)) + 8
+((7 - 3) * 4) + 8
+8 + ((7 - 3) * 4)
+8 - ((3 - 7) * 4)
+8 - (4 * (3 - 7))
+
+Solution algorithm elapsed for 14.283 miliseconds

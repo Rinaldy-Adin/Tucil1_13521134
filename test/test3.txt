@@ -1,0 +1,6 @@
+Cards: A A A A 
+
+0 solutions found
+
+
+Solution algorithm elapsed for 0.592 miliseconds

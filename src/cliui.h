@@ -15,3 +15,5 @@ int menuPrompt(string prompt, vector<string> choices);
 void printCards(int cardNums[]);
 
 void waitForEnter();
+
+void askToSave(int cardNums[], vector<string> solutions, int nanoseconds);
