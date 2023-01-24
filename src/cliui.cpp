@@ -15,22 +15,26 @@ using std::ifstream;
 using std::ofstream;
 using std::string;
 
+// Read cards based off user input
 void readInput(int cardNums[]) {
+    // Initialize variables
     int i = 0;
     int idx = 0;
     bool spaceSeparated = true;
 
+    // Read line from input as string
     string str;
     getline(cin >> std::ws, str);
 
     char c;
+    // Iterate over string to ensure valid input
     while (idx < str.length()) {
         c = str[idx];
 
-        if (c > '1' && c <= '9' && spaceSeparated) {
+        if (c > '1' && c <= '9' && spaceSeparated) {  // Card values under 10
             cardNums[i % 4] = c - '0';
             spaceSeparated = false;
-        } else if (c == '1' && spaceSeparated) {
+        } else if (c == '1' && spaceSeparated) {  // Handle 10
             idx++;
             c = str[idx];
             if (c == '0') {
@@ -40,7 +44,7 @@ void readInput(int cardNums[]) {
                 cardNums[0] = cardNums[1] = cardNums[2] = cardNums[3] = -1;
                 return;
             }
-        } else {
+        } else {  // Handle A J Q K and space character
             if ((c == 'A' || c == 'a') && spaceSeparated) {
                 cardNums[i % 4] = 1;
                 spaceSeparated = false;
@@ -64,12 +68,14 @@ void readInput(int cardNums[]) {
         idx++;
     }
 
+    // Return invalid input if the number of cards given is not 4
     if (i != 4 || idx < str.length()) {
         cardNums[0] = cardNums[1] = cardNums[2] = cardNums[3] = -1;
         return;
     }
 }
 
+// Display splash screen
 void splashScreen() {
     cout << R"(
 .___  ___.      ___       __  ___  _______     __  .___________.    ___    _  _    
@@ -81,6 +87,7 @@ void splashScreen() {
     )" << endl;
 }
 
+// Display header with centered title
 void header(string str) {
     for (int i = 0; i < 20; i++) {
         cout << "=";
@@ -103,6 +110,7 @@ void header(string str) {
     cout << "\n";
 }
 
+// Display menu and recieve valid input
 int menuPrompt(string prompt, vector<string> choices) {
     while (true) {
         cout << prompt << endl;
@@ -134,6 +142,7 @@ int menuPrompt(string prompt, vector<string> choices) {
     }
 }
 
+// Display cards
 void printCards(int cardNums[]) {
     cout << "----- ----- ----- -----" << endl;
     cout << "|   | |   | |   | |   |" << endl;
@@ -161,18 +170,21 @@ void printCards(int cardNums[]) {
     cout << "----- ----- ----- -----" << endl;
 }
 
+// Ask for user to press enter to continue program
 void waitForEnter() {
     cout << "Continue? (press enter)";
     cin.ignore(INT_MAX, '\n');
 }
 
+// Ask for user to save solution results into file
 void askToSave(int cardNums[], vector<string> solutions, int nanoseconds) {
     string str;
-    do {
+    do {  // Validate input
         cout << "\nWould you like to save your results to a file?(y/n): ";
         getline(cin >> std::ws, str);
     } while (str[0] != 'y' && str[0] != 'Y' && str[0] != 'n' && str[0] != 'N');
 
+    // Write to file if user inputs Y
     if (str[0] == 'y' && str[0] != 'Y') {
         do {
             cout << "Enter the path to your file: ";
